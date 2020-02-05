@@ -1,0 +1,88 @@
+$bg: #100e17;
+$colone: #ff8a00;
+$coltwo: #da1b60;
+
+$light: #fff;
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 300vh;
+  background-color: $bg;
+  background-image: radial-gradient(
+    circle, 
+    lighten($bg, 25%) 15%,
+    $bg 100%
+  );
+  font: {
+    family: 'Rubik', sans-serif;
+    size: 10vw;
+    weight: 700;
+  }
+
+  &::after {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: "scroll";
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: $colone;
+    background: linear-gradient(180deg, $colone, $coltwo);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.btnscroll {
+  position: fixed;
+  --size: 72px;
+  right: -40px;
+  bottom: var(--size);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: rgba($light, 0.1);
+  transition: all 500ms linear;
+
+  &.button--show {
+    right: var(--size);
+  }
+
+  .btncanvas {
+    position: fixed;
+  }
+
+  .percent {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    width: inherit;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: $colone;
+
+    &::before {
+      content: attr(data-percent);
+      text-align: center;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .percent {
+      &::before {
+        content: "Up";
+      }
+    }
+  }
+  
+  &:active {
+    transform: scale(1.2);
+    transition: all 200ms ease-out;
+  }
+}

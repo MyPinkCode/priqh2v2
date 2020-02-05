@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <title>LIJE : Google Maps JavaScript API v3</title>
+        <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map_canvas {
+            height: 90%;
+            width: 100%;
+			 margin:5px auto;
+        }
+        </style>
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script>
+		
+
+       
+
+
+      function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+          }
+        };
+
+        request.open('GET', url, true);
+        request.send(null);
+      }
+
+      function doNothing() {}
+     function initialize() {
+    var styles = {
+        'monTheme': [
+        {
+            featureType: 'all',
+            stylers: [
+                
+            ]
+        }
+    ]};
+
+    var mapOptions = {
+        zoom: 7,
+        fullscreenControl: false,
+        center: new google.maps.LatLng(34.931141, 8.775656)
+    }
+    var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+    var styledMapType = new google.maps.StyledMapType(styles['monTheme'], {name: 'monTheme'});
+    map.mapTypes.set('monTheme', styledMapType);
+var infoWindow = new google.maps.InfoWindow;
+var infoWindow1 = new google.maps.InfoWindow;
+          // Change this depending on the name of your PHP or XML file
+          downloadUrl('http://localhost/ARRU/exporter.php', function(data) {
+            var xml = data.responseXML;
+            var projets = xml.documentElement.getElementsByTagName('projet');
+            Array.prototype.forEach.call(projets, function(markerElem) {
+              var id_projet = markerElem.getAttribute('id_projet');  
+			  var rang_projet = markerElem.getAttribute('rang_projet');
+                 var id_municipalite = markerElem.getAttribute('id_municipalite');
+			   
+			    var id_gouvernorat = markerElem.getAttribute('id_gouvernorat');
+			  var id_commune = markerElem.getAttribute('id_commune');
+              var composante_projet = markerElem.getAttribute('composante_projet');
+              var type = markerElem.getAttribute('type');
+			  var nombre_maison = markerElem.getAttribute('nombre_maison');
+			  var nombre_habitant = markerElem.getAttribute('nombre_habitant');
+			  var superficie_quartier_couvert = markerElem.getAttribute('superficie_quartier_couvert');
+			  var cout_total = markerElem.getAttribute('cout_total');			  
+              var point = new google.maps.LatLng(
+                  parseFloat(markerElem.getAttribute('lat')),
+                  parseFloat(markerElem.getAttribute('lng')));
+				  var image1 = markerElem.getAttribute('image1');
+				 var image2 = markerElem.getAttribute('image2');
+				 var image3 = markerElem.getAttribute('image3');
+				 var image4 = markerElem.getAttribute('image4');
+
+              var infowincontent = document.createElement('div');
+			   var strong = document.createElement('strong');
+              strong.textContent = id_gouvernorat
+ 
+			  var strong = document.createElement('strong');
+              strong.textContent = id_commune
+             
+              var strong = document.createElement('strong');
+              strong.textContent = id_municipalite
+            
+
+              var text = document.createElement('text');
+              text.textContent = composante_projet
+    
+			 
+			 var text1 = document.createElement('text');
+              text1.textContent = nombre_maison 
+       
+              
+			  var text2 = document.createElement('text');
+              text2.textContent = nombre_habitant 
+         
+			  
+			  var text3 = document.createElement('text');
+              text3.textContent = superficie_quartier_couvert 
+              
+			  
+			   var strong = document.createElement('strong');
+              strong.textContent = cout_total
+              
+			  
+		
+             
+			 var html = '<div style="text-align:center; color:#FF0000;"><font size="6">"projet ' + rang_projet +'"<br>"'+id_gouvernorat+'"<br>"'+id_commune+'"<br>"'+id_municipalite+'"<br><br></font></div><div style="text-align:right; color:#104E8B;"><font size="5"> '+composante_projet+'<br> '+nombre_maison+'<br> '+nombre_habitant+'<br> '+superficie_quartier_couvert+'<br><br><big></font></div><div style="text-align:right; color:#FF0000;"><font size="6"> '+cout_total+'</big></font></div>';
+                html += '<p align="center"><IMG width="637" height="541" SRC="image/' + image1 + '"/><IMG width="637" height="541" SRC="image/' + image2 + '"/><IMG width="637" height="541" SRC="image/' + image3 + '"/><IMG width="637" height="541" SRC="image/' + image4 + '"/></p>';
+			 
+
+			 
+			 
+			   	
+	
+
+             
+
+ downloadUrl('http://localhost/ARRU/quartier.php?id_projet='+id_projet, function(data) {
+            var xml = data.responseXML;
+            var quartiers = xml.documentElement.getElementsByTagName('quartier');
+			Array.prototype.forEach.call(quartiers, function(markerElem) {
+			var id_quartier = markerElem.getAttribute('id_quartier');
+			var point = new google.maps.LatLng(
+                  parseFloat(markerElem.getAttribute('lat')),
+                  parseFloat(markerElem.getAttribute('lng')));
+			var id_projet = markerElem.getAttribute('id_projet');  
+			var nom_quartier = markerElem.getAttribute('nom_quartier'); 
+			var rang_projet = markerElem.getAttribute('rang_projet'); 			
+
+		   var customLabel = {
+        restaurant: {
+          label: 'R',
+		       },
+        bar: {
+          label: 'B'
+        },
+		 projet: {
+          label: 'P'
+        }
+      };
+					  var icon = customLabel[type] || {};		
+			var projet = new google.maps.Marker({
+                map: map,
+                position: point,       
+			label: icon.label + rang_projet
+			
+              });
+              
+ 		   
+			
+ downloadUrl('http://localhost/ARRU/limite_quartier.php?id_quartier='+id_quartier, function(data) {
+    
+		var html1 = '<div style="text-align:center; color:#FF0000;"><font size="2">"projet' + rang_projet +'"<br>"'+id_gouvernorat+'"<br>"'+id_commune+'"<br>"Quartier :'+nom_quartier+'"</font></div>';
+	    var xml = data.responseXML;
+            var points = xml.documentElement.getElementsByTagName('point');
+			var polyCoords1 = [];
+            Array.prototype.forEach.call(points, function(markerElem) {
+ var point = new google.maps.LatLng(
+                  parseFloat(markerElem.getAttribute('lat')),
+                  parseFloat(markerElem.getAttribute('lng')));
+ polyCoords1.push(point);
+});
+
+    var poly = new google.maps.Polygon({
+        paths:polyCoords1,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.3,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.3
+    });
+    poly.setMap(map);
+	projet.addListener('click', function() {
+                infoWindow.setContent(html);
+                infoWindow.open(map, projet);	
+              });
+
+	
+			  
+			  poly.addListener('mouseover', function() {
+                infoWindow.setContent(html1);
+                infoWindow.open(map, projet);	
+              });
+});				  
+});	
+});
+});
+  });
+          
+}
+        </script>
+    </head>
+    <body onload="initialize()">
+<TABLE align="center" width="85%">
+<tr><td><IMG SRC="images/connexion_03.gif" WIDTH=16 HEIGHT=16 ALT=""><a href="http://127.0.0.1/carte_priqh/afficher_projet.php" class="menu_haut" style=" text-decoration:none; ">&nbsp;Gestion Projet</a>
+<IMG SRC="images/connexion_03.gif" WIDTH=16 HEIGHT=16 ALT=""><a href="http://127.0.0.1/carte_priqh/accueil.php?id_gouvernorat=0" class="menu_haut" style=" text-decoration:none; ">&nbsp;Carte</a>
+</td></tr>
+</table>
+<div id="map_canvas"></div>
+
+    </body>
+</html>
