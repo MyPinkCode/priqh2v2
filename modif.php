@@ -80,10 +80,8 @@
 <select name="gouv" id="gouv" class="form-control selectpicker" onchange="appel()" required>
   <option value="" disabled selected>gouvernorat</option>
   <?php
-  $x="where id_gouvernorat= ".$_GET['data'];
-  if($_GET['data']==0){$x="";}
   if($con){
- $req = "SELECT nom_gouvernorat_fr,id_gouvernorat from gouvernorat ".$x;
+ $req = "SELECT nom_gouvernorat_fr,id_gouvernorat from gouvernorat";
  $result = $con->query($req);
   if ($result->rowCount() > 0) {
   while($row = $result->fetch()) {

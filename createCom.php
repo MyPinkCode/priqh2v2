@@ -11,7 +11,7 @@ include("connection.php");
             VALUES ('$gov', '$nom')";
 		    $res1=$con->exec($req1);
             if($req1){
-			header("location:http://localhost/ARRU/map.php?data=".$gov."&com=0"); 
+			header("location:http://localhost/priqh2/map.php?data=".$gov."&com=0"); 
             }
 		
 		

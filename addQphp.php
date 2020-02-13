@@ -45,7 +45,7 @@
         <ul>
          <li> <a href="index.php"> home</a></li>
          <li><a href="http://localhost/priqh2/geo.php?data=0">geolocalisation </a></li>
-         <li><a href="http://localhost/priqh2/map.php?data=0">carte </a></li>
+         <li><a href="http://localhost/priqh2/map.php?data=0&com=0">carte </a></li>
          <li><a href="add.php"><b>ajout projet</b></a></li>
          <li><a href="addQphp.php"><b>ajout quartier</b></a></li>
           <li><a href="logout.php"><b>Logout</b></a></li>
@@ -72,24 +72,34 @@
 </div>
 
 
-<!-- Select Basic -->
+<div class="form-group"> 
+<label class="col-md-4 control-label">gouvernorat</label>
+<div class="col-md-4 selectContainer">
+<div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+<select name="gouv" id="gouv" class="form-control selectpicker" onchange="appel()" required>
+  <option value="" disabled selected>gouvernorat</option>
+  <?php
+  if($con){
+ $req = "SELECT nom_gouvernorat_fr,id_gouvernorat from gouvernorat";
+ $result = $con->query($req);
+  if ($result->rowCount() > 0) {
+  while($row = $result->fetch()) {
+   echo  '<option value='.$row['id_gouvernorat'].'>'.$row['nom_gouvernorat_fr'].'</option>'; } } }
+                        
+   ?>
+</select>
+</div>
+</div>
+</div>
 
 <div class="form-group"> 
 <label class="col-md-4 control-label">projet</label>
 <div class="col-md-4 selectContainer">
 <div class="input-group">
     <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-<select name="projet" class="form-control selectpicker" required>
-  <option value=""disabled selected >select projet</option>
- <?php  $req = "SELECT id_projet from projet";
-                        $result = $con->query($req);
-                        if ($result->rowCount() > 0) {
-                            while($row = $result->fetch()) {
-                    
-                                    echo  '<option value='.$row['id_projet'].'>projet '.$row['id_projet'].'</option>';
-                                            }
-                                            }
-                                            ?>
+<select name="projet" id="projet" class="form-control selectpicker" required>
+  <option value=""disabled selected >projet</option>
 </select>
 </div>
 </div>
@@ -204,6 +214,35 @@ html=html+"nombre des points :<input type='number' name='coordsnum' readonly val
             outputPanel2.innerHTML = 'Shape: Polygon<br/>Area: ' + area + ' Acres</sup><br/>Perimeter: ' + perimeter + ' miles'+html;
         }
     }
+
+
+    function appel()
+  { var y = document.getElementById("projet");
+  y.options.length=0;
+  option = document.createElement("option");
+option.text ="projet" ;
+option.disabled = true;
+option.selected = true;
+y.add(option); 
+
+       var xhttp, xmlDoc,option,id, x, i;
+xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+if (this.readyState == 4 && this.status == 200) {
+  xmlDoc = this.responseXML;
+  x = xmlDoc.getElementsByTagName("rang");
+  for (i = 0; i < x.length; i++) {
+   option = document.createElement("option");
+option.text = "projet "+ x[i].childNodes[0].nodeValue ;
+option.disabled = false;
+option.selected = false;
+y.add(option); 
+  }
+  }
+};
+xhttp.open("GET","Ajax_projet.php?tbl2="+gouv.options[gouv.selectedIndex].value, true);
+xhttp.send();
+  } 
     </script>
     
     <script async defer src="https://www.bing.com/api/maps/mapcontrol?key=ArdlGakFqN4Klb74KLQ7QqoxBFnRGjVVP6hGtc63lj-TSUssubmRe43i0j-VxHv0&callback=GetMap"

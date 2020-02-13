@@ -21,7 +21,7 @@ include("connection.php");
 		
 
 		
-			header("location:http://localhost/ARRU/map.php?data=".$id."&com=0");  
+			header("location:http://localhost/priqh2/map.php?data=".$id."&com=0");  
 		
 	}
 	  if(isset($_POST['sup']))
@@ -30,7 +30,7 @@ include("connection.php");
 $req = "DELETE FROM gouvernorat where id_gouvernorat='$id'";
 $res = $con->exec($req);
 if ($res) {
-	header("location:http://localhost/ARRU/map.php?data=".$id."&com=0");  
+	header("location:http://localhost/priqh2/map.php?data=".$id."&com=0");  
 }
   }
 	

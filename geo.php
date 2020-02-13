@@ -45,7 +45,7 @@
         <ul>
          <li> <a href="index.php"> home</a></li>
          <li><a href="http://localhost/priqh2/geo.php?data=0">geolocalisation </a></li>
-         <li><a href="http://localhost/priqh2/map.php?data=0">carte </a></li>
+         <li><a href="http://localhost/priqh2/map.php?data=0&com=0">carte </a></li>
          <li><a href="add.php"><b>ajout projet</b></a></li>
          <li><a href="addQphp.php"><b>ajout quartier</b></a></li>
           <li><a href="logout.php"><b>Logout</b></a></li>

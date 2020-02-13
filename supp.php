@@ -8,6 +8,6 @@
             WHERE id_projet=" .$r;
             $res = $con->exec($req);
             if ($res) {
-              header("Location:http://localhost/ARRU/map.php?data=0");
+              header("Location:http://localhost/priqh2/map.php?data=0&com=0");
             }
         ?>
